@@ -1,0 +1,275 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light theme (default) */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 222 47% 11%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 222 47% 11%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 222 47% 11%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 222 47% 11%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 217 33% 18%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 18%;
+    --muted-foreground: 215 20% 75%; /* Improved contrast from 65% to 75% */
+
+    --accent: 217 33% 18%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 18%;
+    --input: 217 33% 18%;
+    --ring: 213 27% 84%;
+
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 210 40% 98%; 
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 217 33% 18%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 18%;
+    --sidebar-ring: 213 27% 84%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+}
+
+@layer components {
+  .chat-message-bubble {
+    @apply rounded-2xl px-4 py-3 max-w-[85%] transition-all backdrop-blur-sm shadow-sm;
+  }
+
+  .user-message {
+    @apply bg-accent/80 text-accent-foreground ml-auto chat-message-bubble border border-white/10;
+  }
+
+  .assistant-message {
+    @apply bg-muted/80 chat-message-bubble border border-white/10;
+  }
+
+  .glass-panel {
+    @apply bg-secondary/50 backdrop-blur-md border border-border/30 rounded-lg shadow-sm;
+  }
+
+  .glassmorphism {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-md;
+  }
+
+  .editor-line {
+    @apply px-4 py-0.5 flex items-start;
+  }
+
+  .editor-line-number {
+    @apply text-muted-foreground text-xs w-7 inline-flex justify-end pr-3 select-none;
+  }
+
+  .editor-line-content {
+    @apply font-mono text-sm;
+  }
+
+  .typing-indicator {
+    display: flex;
+    column-gap: 4px;
+    padding: 8px 12px;
+  }
+
+  .typing-indicator span {
+    width: 8px;
+    height: 8px;
+    background-color: rgba(var(--muted-foreground), 0.7);
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out;
+  }
+
+  .typing-indicator span:nth-child(1) {
+    animation-delay: -0.32s;
+  }
+
+  .typing-indicator span:nth-child(2) {
+    animation-delay: -0.16s;
+  }
+
+  /* Cursor blink animation for streaming text */
+  .cursor-blink {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: currentColor;
+    margin-left: 1px;
+    animation: cursor-blink 0.8s infinite;
+    opacity: 1;
+    vertical-align: middle;
+  }
+
+  @keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  @keyframes bounce {
+    0%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .shimmer {
+    @apply bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:1000px_100%] animate-shimmer;
+  }
+
+  /* VS Code-like syntax highlighting */
+  .vs-keyword {
+    @apply text-purple-400;
+  }
+
+  .vs-string {
+    @apply text-amber-300;
+  }
+
+  .vs-comment {
+    @apply text-green-400;
+  }
+
+  .vs-function {
+    @apply text-yellow-300;
+  }
+
+  .vs-variable {
+    @apply text-blue-300;
+  }
+
+  .vs-type {
+    @apply text-teal-300;
+  }
+
+  /* VS Code-like file tree */
+  .file-explorer-item {
+    @apply flex items-center py-1 px-2 text-sm cursor-pointer hover:bg-accent/20 rounded;
+  }
+
+  .file-explorer-item.active {
+    @apply bg-accent/30;
+  }
+
+  /* Code editor tab styling */
+  .editor-tab {
+    @apply flex items-center h-9 px-3 border-r border-border;
+  }
+
+  .editor-tab.active {
+    @apply bg-background;
+  }
+
+  /* VS Code-like scrollbars */
+  .vs-scrollbar::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  .vs-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .vs-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full;
+  }
+
+  .vs-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+
+  /* Animate loader */
+  @keyframes loader-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-loader-spin {
+    animation: loader-spin 1.2s linear infinite;
+  }
+}
